@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#087f8c">
+  <meta name="description" content="麻醉计算助手：本地计算、清晰公式、离线可用。">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./releases/1.0.0/styles.css">
+  <title>麻醉计算助手</title>
+</head>
+<body>
+  <div id="app"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="reset-dialog" aria-labelledby="reset-title">
+    <div class="dialog-icon">↻</div><h2 id="reset-title">开始新患者？</h2>
+    <p>清空全部工具中的身高、体重、性别选择和计算结果。收藏会保留。</p>
+    <div class="dialog-actions"><button id="cancel-reset" class="secondary">取消</button><button id="confirm-reset" class="primary">清空并开始</button></div>
+  </dialog>
+  <noscript>请启用 JavaScript 以使用本地计算功能。</noscript>
+  <script type="module" src="./releases/1.0.0/app.js"></script>
+</body>
+</html>
