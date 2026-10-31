@@ -1,9 +1,9 @@
-const VERSION = '1.0.0';
-const NOTES = '首个预览版：六项体重指标、成人 BMI 分级、搜索收藏与离线计算。';
+const VERSION = '1.1.0';
+const NOTES = '1.1 更新：移除“实际体重”独立工具，保留 BMI、瘦体重等所需的实际体重输入；现有 5 项计算工具。';
 // Scope-specific prefix prevents deleting caches owned by other apps on this origin.
 const PREFIX = `anesthesia:${self.registration.scope}:`;
 const CACHE = `${PREFIX}${VERSION}`;
-const ASSETS = ['./', './index.html', './releases/1.0.0/app.js', './releases/1.0.0/formulas.js', './releases/1.0.0/styles.css', './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png'];
+const ASSETS = ['./', './index.html', './releases/1.1.0/app.js', './releases/1.1.0/formulas.js', './releases/1.1.0/styles.css', './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png'];
 const assetURLs = ASSETS.map(path => new URL(path, self.registration.scope).href);
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
