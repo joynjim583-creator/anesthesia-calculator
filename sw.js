@@ -1,9 +1,9 @@
-const VERSION = '1.1.0';
-const NOTES = '1.1 更新：移除“实际体重”独立工具，保留 BMI、瘦体重等所需的实际体重输入；现有 5 项计算工具。';
+const VERSION = '1.1.1';
+const NOTES = '统一输入，一次计算六项指标；新增成人校正体重 CBW＝IBW＋0.4×（实际体重－IBW），IBW 为理想体重；移除新患者按钮，隐藏搜索栏，精简公式展示。';
 // Scope-specific prefix prevents deleting caches owned by other apps on this origin.
 const PREFIX = `anesthesia:${self.registration.scope}:`;
 const CACHE = `${PREFIX}${VERSION}`;
-const ASSETS = ['./', './index.html', './releases/1.1.0/app.js', './releases/1.1.0/formulas.js', './releases/1.1.0/styles.css', './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png'];
+const ASSETS = ['./', './index.html', './releases/1.1.1/app.js', './releases/1.1.1/formulas.js', './releases/1.1.1/styles.css', './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png'];
 const assetURLs = ASSETS.map(path => new URL(path, self.registration.scope).href);
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
