@@ -1,9 +1,9 @@
-const VERSION = '1.1.2';
-const NOTES = "1.1.2 测试版：新增围术期血糖管理专题，三指南分路径评估、皮下纠正/静脉输注/低血糖速查与来源定位；保留六项体重计算。";
+const VERSION = '1.1.3';
+const NOTES = "1.1.3 测试版：删除术中参数评估，改为按情况查处理流程；新增文献原图/原表与中文解读，支持原图放大及离线查看。";
 // Scope-specific prefix prevents deleting caches owned by other apps on this origin.
 const PREFIX = `anesthesia:${self.registration.scope}:`;
 const CACHE = `${PREFIX}${VERSION}`;
-const ASSETS = ['./', './index.html', './releases/1.1.2/app.js', './releases/1.1.2/formulas.js', './releases/1.1.2/styles.css', './releases/1.1.2/glucose.js', './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png'];
+const ASSETS = ['./', './index.html', './releases/1.1.3/app.js', './releases/1.1.3/formulas.js', './releases/1.1.3/styles.css', './releases/1.1.3/glucose.js', './releases/1.1.3/figures.js', './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png'];
 const assetURLs = ASSETS.map(path => new URL(path, self.registration.scope).href);
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
