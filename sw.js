@@ -1,9 +1,9 @@
-const VERSION = '1.1.4';
-const NOTES = "1.1.4 测试版：血糖专题六张图表全部中文化，保留原版分栏、表格、箭头与脚注；支持放大、滚动和离线查看。";
+const VERSION = '1.2.0';
+const NOTES = "1.2.0 测试版：新增脊髓损伤神经功能评估专题（ISNCSCI 2026第9版），含16份中文图表、原文对照、10例运动平面讲解及离线查看。";
 // Scope-specific prefix prevents deleting caches owned by other apps on this origin.
 const PREFIX = `anesthesia:${self.registration.scope}:`;
 const CACHE = `${PREFIX}${VERSION}`;
-const ASSETS = ['./', './index.html', './releases/1.1.4/app.js', './releases/1.1.4/formulas.js', './releases/1.1.4/styles.css', './releases/1.1.4/glucose.js', './releases/1.1.4/figures.js', './releases/1.1.4/figure-data-a.js', './releases/1.1.4/figure-data-b.js', './manifest.webmanifest', './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png'];
+const ASSETS = ['./','./index.html','./releases/1.2.0/app.js','./releases/1.2.0/formulas.js','./releases/1.2.0/styles.css','./releases/1.2.0/glucose.js','./releases/1.2.0/figures.js','./releases/1.2.0/figure-data-a.js','./releases/1.2.0/figure-data-b.js','./releases/1.2.0/neuro.js','./releases/1.2.0/neuro-data.js','./releases/1.2.0/neuro-figures.js','./releases/1.2.0/neuro.css','./releases/1.2.0/neuro-payload-1.js','./releases/1.2.0/neuro-payload-2.js','./releases/1.2.0/neuro-payload-3.js','./releases/1.2.0/neuro-payload-4.js','./releases/1.2.0/neuro-payload-5.js','./releases/1.2.0/neuro-payload-6.js','./releases/1.2.0/neuro-payload-7.js','./releases/1.2.0/neuro-payload-8.js','./manifest.webmanifest','./icons/icon.svg','./icons/icon-192.png','./icons/icon-512.png'];
 const assetURLs = ASSETS.map(path => new URL(path, self.registration.scope).href);
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
