@@ -1,9 +1,9 @@
-const VERSION = '1.2.0';
-const NOTES = "1.2.0 测试版：新增脊髓损伤神经功能评估专题（ISNCSCI 2026第9版），含16份中文图表、原文对照、10例运动平面讲解及离线查看。";
+const VERSION = '1.2.1';
+const NOTES = "1.2.1 测试版：重写神经专题工具介绍，补充11个项目的文献背景、基础概念、阅读提示与原文页码；保留查体步骤、分类规则及中英对照图表。";
 // Scope-specific prefix prevents deleting caches owned by other apps on this origin.
 const PREFIX = `anesthesia:${self.registration.scope}:`;
 const CACHE = `${PREFIX}${VERSION}`;
-const ASSETS = ['./','./index.html','./releases/1.2.0/app.js','./releases/1.2.0/formulas.js','./releases/1.2.0/styles.css','./releases/1.2.0/glucose.js','./releases/1.2.0/figures.js','./releases/1.2.0/figure-data-a.js','./releases/1.2.0/figure-data-b.js','./releases/1.2.0/neuro.js','./releases/1.2.0/neuro-data.js','./releases/1.2.0/neuro-figures.js','./releases/1.2.0/neuro.css','./releases/1.2.0/neuro-payload-1.js','./releases/1.2.0/neuro-payload-2.js','./releases/1.2.0/neuro-payload-3.js','./releases/1.2.0/neuro-payload-4.js','./releases/1.2.0/neuro-payload-5.js','./releases/1.2.0/neuro-payload-6.js','./releases/1.2.0/neuro-payload-7.js','./releases/1.2.0/neuro-payload-8.js','./manifest.webmanifest','./icons/icon.svg','./icons/icon-192.png','./icons/icon-512.png'];
+const ASSETS = ['./','./index.html','./releases/1.2.1/app.js','./releases/1.2.1/formulas.js','./releases/1.2.1/styles.css','./releases/1.2.1/glucose.js','./releases/1.2.1/figures.js','./releases/1.2.1/figure-data-a.js','./releases/1.2.1/figure-data-b.js','./releases/1.2.1/neuro.js','./releases/1.2.1/neuro-data.js','./releases/1.2.1/neuro-background.js','./releases/1.2.1/neuro-figures.js','./releases/1.2.1/neuro.css','./releases/1.2.1/neuro-payload-1.js','./releases/1.2.1/neuro-payload-2.js','./releases/1.2.1/neuro-payload-3.js','./releases/1.2.1/neuro-payload-4.js','./releases/1.2.1/neuro-payload-5.js','./releases/1.2.1/neuro-payload-6.js','./releases/1.2.1/neuro-payload-7.js','./releases/1.2.1/neuro-payload-8.js','./manifest.webmanifest','./icons/icon.svg','./icons/icon-192.png','./icons/icon-512.png'];
 const assetURLs = ASSETS.map(path => new URL(path, self.registration.scope).href);
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
