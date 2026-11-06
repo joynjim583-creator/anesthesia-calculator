@@ -18,3 +18,4 @@
 Rupp R, et al. International Standards for Neurological Classification of Spinal Cord Injury: 9th edition 2026. Top Spinal Cord Inj Rehabil. 2026;32(4):141–168. [doi:10.46292/sci26-00067](https://doi.org/10.46292/sci26-00067)。中文内容为本项目整理，非官方中文版。
 
 供个人学习和辅助速查，尚未经临床验收。安卓真机安装、飞行模式及升级体验待验收。Pages保持main根目录发布；当前资源位于releases/1.2.1/，已发布旧目录保留。
+<!-- Pages deployment retry: 1.2.1, 2026-11-06. Application assets unchanged. -->
