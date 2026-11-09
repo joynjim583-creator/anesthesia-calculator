@@ -1,0 +1,56 @@
+import {sources,topics,recommendations,sambaRecommendations,glossary,chapterMap} from '../1.3.2/glucose-data.js';
+import {figures,images} from '../1.3.2/figures.js';
+import {originalPages} from '../1.3.2/glucose-original.js';
+export {sources,topics};
+export function renderGlucose(ctx,route){
+ const {shell,icon,escape:e,favorites}=ctx;const parts=route.split('/');let leaf=parts[1]||'home';
+ if(['assess','result'].includes(leaf)){location.hash='glucose';return;}
+ const link=(id,title,sub='')=>`<a class="cv-link" href="#glucose/${id}"><span><strong>${e(title)}</strong><small>${e(sub)}</small></span>${icon('arrow')}</a>`;
+ const box=(title,text,cls='')=>`<section class="panel cv-copy ${cls}"><h2>${e(title)}</h2><p>${e(text)}</p></section>`;
+ const header=(title,home=false)=>`<header class="inner-header cv-header"><a class="back" href="#${home?'home':'glucose'}">${icon('back')}${home?'首页':'血糖管理'}</a>${home?`<button id="favorite-glucose" class="icon-button ${favorites.includes('glucose')?'is-favorite':''}" aria-label="${favorites.includes('glucose')?'取消收藏血糖专题':'收藏血糖专题'}" aria-pressed="${favorites.includes('glucose')}">${icon('star')}</button>`:''}</header><div class="cv-title"><span class="eyebrow">PERIOPERATIVE GLUCOSE MANAGEMENT</span><h1>${e(title)}</h1></div>`;
+ const pageButtons=()=>'';
+ const refs=()=>'';
+ const figureCard=id=>{const f=figures.find(x=>x.id===id);return `<article class="cv-figure-card" id="figure-${id}"><h3>${e(f.title)}</h3><button type="button" class="inline-figure-button" data-g-figure="${id}" ${f.translated?'':'data-original="true"'} aria-label="放大${e(f.title)}"><img class="inline-figure" loading="lazy" src="${images[id+(f.translated?'-zh':'-en')]}" alt="${e(f.title)}，${f.translated?'中文译图':'研究方法图'}"></button><div class="cv-button-row"><span class="inline-hint">点击图表放大</span>${f.translated?`<button class="text-button" data-g-figure="${id}" data-original="true">原文对照</button>`:''}</div>${f.reason?`<p class="g-figure-status">${e(f.reason)}</p>`:''}</article>`;};
+ const adaRec=r=>`<article class="panel cv-rec" data-g-rec="${r.id}"><div class="cv-rec-tags"><span class="cv-cor">ADA ${r.id}</span><span>等级 ${e(r.grade)}</span></div><p>${e(r.text)}</p>${pageButtons('ada',[r.page])}</article>`;
+ const sambaRec=r=>`<article class="panel cv-rec"><div class="cv-rec-tags"><span class="cv-cor">${r.strength}推荐</span><span>${r.grade}证据</span><small>相较2010：${r.change}</small></div><h3>${e(r.id)}</h3><p>${e(r.text)}</p>${pageButtons('samba',[5])}</article>`;
+ let content;
+ if(leaf==='home'){
+  content=header('围术期血糖管理',true)+`<section class="cv-intro g-intro"><span class="cv-edition">CPOC 2023 · ADA 2026 · SAMBA 2024</span><h2>先明确场景，再查处理与依据</h2><p>把三份指南与共识整理成成人围术期血糖查阅专题，帮助理解术前准备、异常血糖处理、胰岛素输注、设备与术后衔接。</p><p>按当前问题进入，先看背景和适用条件，再看处理步骤、原文推荐及图表。各文献的目标、干预阈值与复测间隔分别保留；完整阅读从章节入口开始。</p><div class="cv-stats"><span>${topics.length}个主题</span><span>3份原文</span><span>离线中文／原文对照</span></div></section>`+
+  `<div class="section-heading"><h2>按当前问题查阅</h2><span>人工参考</span></div><div class="cv-scenarios">${topics.filter(t=>['high','hypo','iv','daycase','crisis','preop'].includes(t.id)).map((t,i)=>`<a class="cv-scenario" href="#glucose/topic/${t.id}"><span class="cv-number">0${i+1}</span><strong>${t.title}</strong><small>${t.tag}</small>${icon('arrow')}</a>`).join('')}</div>`+
+  `<div class="section-heading"><h2>完整阅读与对照</h2></div><div class="cv-links">${link('chapters','完整章节与主题','术前、术中、设备、急诊、术后和团队实施')}${link('thresholds','各指南目标与阈值','适用范围、干预条件与容易混淆之处')}${link('figures','图表与附件目录','完整清点；逐项说明中文译制与原文状态')}${link('recommendations','原文分级推荐','ADA 21个推荐条目；SAMBA表1的11项')}${link('sources','基础概念与来源','术语、证据等级、原文页码与疑点')}</div><p class="preview-note">1.3.3 测试版 · 成人、非妊娠临床查阅；不采集患者血糖、不自动分类或生成治疗剂量。待临床审核。</p>`;
+ }else if(leaf==='chapters'){
+  content=header('完整章节与主题')+box('阅读顺序','先了解全程及适用范围，再按需要阅读术前、异常血糖、输注与设备、急诊及术后。中文为来源明确的转述与编辑性组织；完整原文提取文本可逐页离线核对。')+`<div class="cv-links">${topics.map(t=>link('topic/'+t.id,t.title,t.tag)).join('')}</div>`;
+ }else if(leaf==='topic'||topics.some(t=>t.id===leaf)){
+  const id=leaf==='topic'?parts[2]:leaf;const t=topics.find(x=>x.id===id);if(!t){location.hash='glucose';return;}
+  content=header(t.title)+box('背景与用途',t.background,'cv-background')+`<section class="panel cv-copy"><h2>先核对这些条件</h2><ul>${t.checks.map(x=>`<li>${e(x)}</li>`).join('')}</ul></section><section class="panel cv-copy"><h2>处理与查阅步骤</h2><ol class="cv-steps">${t.steps.map(x=>`<li>${e(x)}</li>`).join('')}</ol><p class="cv-label">中文整理／编辑性说明。实际处理需结合相应原文条件与本机构流程。</p></section>`+
+  (t.rec.length?`<div class="section-heading"><h2>ADA推荐 · 中文转述</h2></div>${t.rec.map(id=>adaRec(recommendations.find(r=>r.id===id))).join('')}`:box('本页证据形式','本页为原文讨论及流程转述；CPOC未列统一推荐等级，不添加COR／LOE。'))+
+  (t.samba?`<div class="section-heading"><h2>SAMBA表1推荐</h2></div>${t.samba.map(i=>sambaRec(sambaRecommendations[i])).join('')}`:'')+
+  (t.figures.length?`<div class="section-heading"><h2>相关图表</h2></div>${t.figures.map(figureCard).join('')}`:'')+box('容易误解与原文疑点',t.pitfalls,'g-pitfalls')+refs(t.refs)+`<details class="panel disclosure"><summary>其他主题${icon('arrow')}</summary>${topics.filter(x=>x.id!==t.id).map(x=>link('topic/'+x.id,x.title)).join('')}</details>`;
+ }else if(leaf==='thresholds'){
+  content=header('各指南目标与干预条件')+box('先区分目标、定义与干预阈值','以下并列不同来源的原意，单位沿用原文。较宽目标的下限不是补糖阈值，也不能把住院目标直接搬到所有日间操作。')+
+  `<section class="panel cv-copy"><h2>CPOC 2023 · 成人择期／急诊</h2><p>通常目标6–10 mmol/L，至12 mmol/L可接受；手术室及恢复室部分写6–12 mmol/L。救援章节在CBG>12 mmol/L开始处理，患者不适或CBG>13 mmol/L查血酮。</p><p>低血糖<4 mmol/L；使用胰岛素或促泌剂者4–6 mmol/L为将发生低血糖的情景。未用降糖药且清醒者4 mmol/L附近的处理不能直接套用到麻醉患者。</p>${pageButtons('cpoc',[14,26,27,28,39])}</section>`+
+  `<section class="panel cv-copy"><h2>ADA 2026 · 按住院场景区分</h2><p>多数ICU开始治疗后目标140–180 mg/dL（7.8–10.0 mmol/L）；非危重及围术期通常100–180 mg/dL（5.6–10.0 mmol/L），均需结合低血糖风险。</p><p>持续≥180 mg/dL（≥10.0 mmol/L），24 h内两次证实，是多数住院患者开始／强化治疗的条件。低血糖定义<70 mg/dL（<3.9 mmol/L）。</p>${pageButtons('ada',[2,8])}</section>`+
+  `<section class="panel cv-copy"><h2>SAMBA 2024 · 成人糖尿病日间手术</h2><p>目标180–250 mg/dL，结合患者及操作特点；未用过胰岛素且>250 mg/dL者，仅有条件考虑胰岛素。</p><p>皮下速效后90–120 min内复测；低血糖每15–30 min，直至纠正至安全。不得因低于180 mg/dL就补糖。</p>${pageButtons('samba',[5,11,12,13])}</section>`+link('topic/crisis','DKA / HHS使用专门诊断与治疗条件')+link('topic/sc','皮下纠正的复测和叠加风险');
+ }else if(leaf==='figures'){
+  content=header('图表与附件目录')+box('译图与原文的边界','中文图表保留原行列、框体、箭头、分支与配色，通过缩放和双向滚动阅读；中文非官方版本。原文整页含图注、脚注及上下文。目录逐项标明实际译制状态，未译项只显示原文，不称为中文译图。')+`<p class="preview-note">19项：编号图表、连续用药表、急诊矩阵及3份正文步骤节选。CPOC附录1–3是文字性附件，见完整章节原文定位。</p><div class="cv-figures">${figures.map(f=>figureCard(f.id)).join('')}</div>`;
+ }else if(leaf==='recommendations'){
+  content=header('原文分级推荐')+box('怎样理解等级','ADA保留原A/B/C/E等级，A/B/C为不同证据层次，E为专家共识；不等于本应用已完成临床验证。SAMBA分别保留推荐强度和证据质量；CPOC正文建议不补造等级。')+`<h2>ADA 2026 · 21个条目</h2>${recommendations.map(adaRec).join('')}<h2>SAMBA 2024 · 表1的11项</h2>${sambaRecommendations.map(sambaRec).join('')}`;
+ }else if(leaf==='sources'){
+  content=header('基础概念与缩写')+box('使用范围','面向麻醉医生的成人非妊娠围术期查阅。三份所提供文献固定为CPOC 2023、ADA 2026及SAMBA 2024，不宣称覆盖其后全部更新。个别原文涉及儿童或妊娠的讨论不外推成本专题处理路径。')+`<section class="panel cv-copy"><h2>常用术语</h2><dl class="g-glossary">${glossary.map(([a,b])=>`<dt>${a}</dt><dd>${e(b)}</dd>`).join('')}</dl></section>`+box('原文疑点记录','CPOC VRIII表数值区间空隙、2–6 units与0.1 units/kg分述、急诊附表一餐处条件重叠及FRII字样；SAMBA药物表数值、胰岛素正文／表格和低血糖定义差异；ADA图16.1补磷单位及静脉转皮下时长。具体页均另有说明，未静默勘误。')+
+  box('对照与隐私','原文提取文本可能有断词、双栏次序或编码问题，不能替代图表版式，复杂内容以原文整页为准。仅收藏偏好可保存；本专题没有患者输入、血糖历史、自动分型或剂量计算。外部链接仅主动点击时联网。');
+ }else{location.hash='glucose';return;}
+ const modal=`<dialog id="g-viewer" class="cv-viewer" aria-labelledby="g-view-title"><header><h2 id="g-view-title"></h2><button class="secondary" id="g-close">关闭</button></header><div class="cv-view-tools"><button class="secondary" id="g-switch">查看原文</button><div><button class="secondary" id="g-less" aria-label="缩小图表">−</button><output id="g-scale">100%</output><button class="secondary" id="g-more" aria-label="放大图表">＋</button></div></div><div id="g-viewport" tabindex="0" aria-label="血糖专题图表双向滚动区域" data-zoom="0"></div><p id="g-caption"></p></dialog>`;
+ shell(`<main id="main">${content}</main>${modal}`,'home','cv-shell g-shell');
+ document.querySelector('#favorite-glucose')?.addEventListener('click',event=>{const on=ctx.toggleFavorite('glucose');const b=event.currentTarget;b.classList.toggle('is-favorite',on);b.setAttribute('aria-pressed',String(on));b.setAttribute('aria-label',on?'取消收藏血糖专题':'收藏血糖专题');});
+ const dialog=document.querySelector('#g-viewer'),viewport=document.querySelector('#g-viewport');let current,original=false,zoom=0,opener;
+ const redraw=()=>{viewport.dataset.zoom=String(zoom);document.querySelector('#g-scale').textContent=[100,150,200,300][zoom]+'%';document.querySelector('#g-less').disabled=zoom===0;document.querySelector('#g-more').disabled=zoom===3;
+  document.querySelector('#g-switch').hidden=current.text||!current.translated;document.querySelector('#g-switch').textContent=original?'查看中文':'查看原文';document.querySelector('#g-view-title').textContent=current.title+(current.text?' · 原文提取文本':original?' · 原文整页':' · 中文');
+  viewport.innerHTML=current.text?`<div class="cv-sheet cv-original-text"><p>原文提取文本；双栏与脚注次序可能变化，图表请用整页图像核对。</p><pre>${e(originalPages[current.source][current.page])}</pre></div>`:`<img id="g-image" class="cv-original-image" src="${images[current.id+(original?'-en':'-zh')]}" alt="${e(current.title)} · ${original?'原文整页，含图注与脚注':'原结构中文翻译'}">`;
+  document.querySelector('#g-caption').textContent=(original?'原文对照':'中文译图 · 非官方中文版')+' · 可缩放并双向滚动。';
+ };
+ const open=(b,f,isOriginal)=>{opener=b;current=f;original=isOriginal;zoom=0;redraw();viewport.scrollTo(0,0);dialog.showModal();};
+ document.querySelectorAll('[data-g-figure]').forEach(b=>b.addEventListener('click',()=>{const f=figures.find(x=>x.id===b.dataset.gFigure);open(b,f,b.dataset.original==='true'||!f.translated);}));
+ document.querySelectorAll('[data-g-page]').forEach(b=>b.addEventListener('click',()=>{const [s,n]=b.dataset.gPage.split(':');open(b,{text:true,source:s,page:Number(n),title:sources[s].name+' PDF '+n},true);}));
+ document.querySelector('#g-switch').addEventListener('click',()=>{original=!original;redraw();viewport.scrollTo(0,0);});
+ document.querySelector('#g-less').addEventListener('click',()=>{zoom=Math.max(0,zoom-1);redraw();});document.querySelector('#g-more').addEventListener('click',()=>{zoom=Math.min(3,zoom+1);redraw();});document.querySelector('#g-close').addEventListener('click',()=>dialog.close());dialog.addEventListener('close',()=>{viewport.innerHTML='';opener?.focus();});
+}
